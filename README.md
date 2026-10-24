@@ -97,7 +97,9 @@ java -cp out id.kelompok.absensigaji.app.Main
 ## Status Proyek Saat Ini
 
 > [!NOTE]
-> Proyek saat ini telah dikosongkan dari implementasi fungsional siap pakai dan berada dalam status **Kerangka Pembelajaran (Skeleton Framework)**.
-> - Struktur class, package, dan method signature publik telah terdefinisi dan siap dikompilasi dengan sukses (`javac`).
-> - Seluruh algoritma bisnis, validasi, dan alur pemrosesan telah dikosongkan dan ditandai dengan komentar `TODO` yang spesifik serta `UnsupportedOperationException`.
-> - Setiap anggota tim akan mengimplementasikan bagian masing-masing secara mandiri melalui branch Git terpisah (`feat/employee-and-app-ilham`, `feat/attendance-module-ade`, `feat/payroll-module-andri`) dan mengajukan Pull Request untuk di-review oleh rekan tim.
+> Seluruh modul sistem telah selesai diimplementasikan secara penuh dan berhasil diverifikasi:
+> - **Modul Employee & App (Ilham Sepriyadi):** Entitas `Karyawan`, validasi nilai, navigasi menu konsol interaktif `Main`, dan orkestrasi antarmodul.
+> - **Modul Attendance (Ade):** Enum `StatusAbsensi`, model `CatatanAbsensi`, serta layanan `AbsensiService` dengan validasi anti-duplikasi harian dan filter periode.
+> - **Modul Payroll (Andri):** DTO `HasilPenggajian` dan layanan `PenggajianService` dengan kalkulasi proporsional potongan Alpha (standar 26 hari kerja), upah lembur, dan proteksi gaji bersih non-negatif.
+> - **Pengujian:** Seluruh 15 skenario pengujian unit dan integrasi (**TC-01** s/d **TC-15**) pada `docs/TEST-CASE.md` telah dijalankan dan berstatus **Lulus** (15/15).
+> - **Bukti Visual:** Tangkapan layar terminal asli telah didokumentasikan pada folder `screenshots/`.
