@@ -15,13 +15,21 @@ public class Karyawan {
 
     public Karyawan(String id, String nama, String jabatan,
                     long gajiPokokBulanan, long tunjanganTetapBulanan) {
-        // TODO: Ilham - Implementasikan validasi pembuatan objek Karyawan:
-        // 1. id, nama, dan jabatan tidak boleh null atau kosong (blank).
-        // 2. gajiPokokBulanan dan tunjanganTetapBulanan tidak boleh bernilai negatif (< 0).
-        // 3. Normalisasi teks (trim) sebelum disimpan ke atribut.
-        this.id = id;
-        this.nama = nama;
-        this.jabatan = jabatan;
+        if (id == null || id.isBlank()) {
+            throw new IllegalArgumentException("ID karyawan tidak boleh kosong.");
+        }
+        if (nama == null || nama.isBlank()) {
+            throw new IllegalArgumentException("Nama karyawan tidak boleh kosong.");
+        }
+        if (jabatan == null || jabatan.isBlank()) {
+            throw new IllegalArgumentException("Jabatan tidak boleh kosong.");
+        }
+        if (gajiPokokBulanan < 0 || tunjanganTetapBulanan < 0) {
+            throw new IllegalArgumentException("Gaji pokok dan tunjangan tidak boleh bernilai negatif.");
+        }
+        this.id = id.trim();
+        this.nama = nama.trim();
+        this.jabatan = jabatan.trim();
         this.gajiPokokBulanan = gajiPokokBulanan;
         this.tunjanganTetapBulanan = tunjanganTetapBulanan;
     }
@@ -48,7 +56,7 @@ public class Karyawan {
 
     @Override
     public String toString() {
-        // TODO: Ilham - Implementasikan representasi String untuk menampilkan data karyawan dengan format rapi
-        throw new UnsupportedOperationException("TODO: toString() Karyawan belum diimplementasikan.");
+        return String.format("ID: %s | Nama: %s | Jabatan: %s | Gaji Pokok: Rp%,d | Tunjangan: Rp%,d",
+                id, nama, jabatan, gajiPokokBulanan, tunjanganTetapBulanan);
     }
 }

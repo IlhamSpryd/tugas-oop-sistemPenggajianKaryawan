@@ -1,6 +1,7 @@
 package id.kelompok.absensigaji.attendance;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * Merepresentasikan satu rekaman absensi seorang karyawan pada tanggal tertentu.
@@ -15,15 +16,18 @@ public class CatatanAbsensi {
 
     public CatatanAbsensi(String idKaryawan, LocalDate tanggal,
                           StatusAbsensi status, int jamLembur) {
-        // TODO: Ade - Implementasikan validasi bisnis pencatatan absensi:
-        // 1. idKaryawan tidak boleh null atau kosong (blank).
-        // 2. tanggal dan status tidak boleh null (gunakan validasi eksplisit / Objects.requireNonNull).
-        // 3. jamLembur tidak boleh bernilai negatif (< 0).
-        // 4. jamLembur hanya boleh bernilai > 0 jika status == StatusAbsensi.HADIR.
-        //    Jika status bukan HADIR dan jamLembur != 0, lemparkan IllegalArgumentException.
-        this.idKaryawan = idKaryawan;
-        this.tanggal = tanggal;
-        this.status = status;
+        if (idKaryawan == null || idKaryawan.isBlank()) {
+            throw new IllegalArgumentException("ID karyawan tidak boleh kosong.");
+        }
+        this.idKaryawan = idKaryawan.trim();
+        this.tanggal = Objects.requireNonNull(tanggal, "Tanggal harus diisi.");
+        this.status = Objects.requireNonNull(status, "Status absensi harus diisi.");
+        if (jamLembur < 0) {
+            throw new IllegalArgumentException("Jam lembur tidak boleh negatif.");
+        }
+        if (status != StatusAbsensi.HADIR && jamLembur != 0) {
+            throw new IllegalArgumentException("Jam lembur hanya dapat dicatat untuk status HADIR.");
+        }
         this.jamLembur = jamLembur;
     }
 
@@ -45,7 +49,7 @@ public class CatatanAbsensi {
 
     @Override
     public String toString() {
-        // TODO: Ade - Implementasikan representasi String untuk catatan absensi (misal: "tanggal | id | status | jam lembur")
-        throw new UnsupportedOperationException("TODO: toString() CatatanAbsensi belum diimplementasikan.");
+        return String.format("%s | %s | %s | Lembur: %d jam",
+                tanggal, idKaryawan, status, jamLembur);
     }
 }
