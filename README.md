@@ -1,117 +1,103 @@
 # Sistem Absensi dan Penggajian Karyawan (Java OOP)
 
-Proyek kelompok mata kuliah **Pemrograman Berorientasi Objek**. Aplikasi konsol ini mendemonstrasikan pencatatan absensi karyawan dan simulasi penggajian bulanan yang mencakup gaji pokok, tunjangan, lembur, dan potongan.
+Proyek kelompok mata kuliah **Pemrograman Berorientasi Objek**. Proyek ini dirancang sebagai kerangka kerja pembelajaran (*learning skeleton/framework*) bertaraf industri untuk mengimplementasikan sistem pencatatan kehadiran karyawan dan simulasi penggajian bulanan berbasis konsol menggunakan bahasa pemrograman Java murni.
 
-## Anggota kelompok
+---
 
-1. Ilham Sepriyadi — koordinator, integrasi aplikasi, data karyawan, dan dokumentasi utama.
-2. Ade — modul absensi dan validasi pencatatan kehadiran.
-3. Andri — modul perhitungan gaji, lembur, potongan, dan pengujian payroll.
+## Anggota Kelompok & Kepemilikan Modul
 
-Rincian pekerjaan ada di [`docs/PEMBAGIAN-TUGAS.md`](docs/PEMBAGIAN-TUGAS.md).
+1. **Ilham Sepriyadi** — Koordinator proyek, integrasi sistem, modul `employee` (`Karyawan.java`), menu konsol `app` (`Main.java`), dan dokumentasi arsitektur.
+2. **Ade** — Modul `attendance` (`StatusAbsensi.java`, `CatatanAbsensi.java`, `AbsensiService.java`), validasi kehadiran, anti-duplikasi, dan pengujian modul absensi.
+3. **Andri** — Modul `payroll` (`HasilPenggajian.java`, `PenggajianService.java`), logika kalkulasi gaji, upah lembur, potongan alpha, dan pengujian payroll.
 
-## Fitur
+Rincian batas kepemilikan dan panduan alur kerja Git tersedia di [`docs/PEMBAGIAN-TUGAS.md`](docs/PEMBAGIAN-TUGAS.md).
 
-- Menambah dan melihat data karyawan.
-- Mencatat status absensi: Hadir, Izin, Sakit, atau Alpha.
-- Mencatat jam lembur untuk hari berstatus Hadir.
-- Melihat riwayat absensi berdasarkan ID karyawan dan bulan.
-- Menghitung rincian gaji bulanan: gaji pokok, tunjangan, upah lembur, potongan absensi, potongan tambahan, dan gaji bersih.
-- Validasi ID karyawan, format tanggal, nilai gaji, jam lembur, dan duplikasi absensi pada tanggal yang sama.
+---
 
-## Teknologi
-
-- Java 17 atau lebih baru.
-- Java Standard Library saja; tidak memerlukan framework atau dependency eksternal.
-- Penyimpanan masih di memori. Data akan hilang saat program ditutup; database dan penyimpanan permanen berada di luar ruang lingkup versi awal ini.
-
-## Cara menjalankan
-
-Pastikan Java sudah terpasang:
-
-```bash
-java -version
-javac -version
-```
-
-Dari direktori utama repository, kompilasi semua file:
-
-```bash
-javac -d out $(find src/main/java -name "*.java")
-```
-
-Jalankan program:
-
-```bash
-java -cp out id.kelompok.absensigaji.app.Main
-```
-
-**Windows PowerShell:** jika perintah `find` tidak tersedia atau berbeda perilakunya, gunakan:
-
-```powershell
-$files = Get-ChildItem -Recurse src/main/java -Filter *.java | ForEach-Object { $_.FullName }
-javac -d out $files
-java -cp out id.kelompok.absensigaji.app.Main
-```
-
-## Aturan simulasi penggajian
-
-Aturan ini ditetapkan agar perilaku program konsisten dan mudah dijelaskan saat presentasi. Ini **simulasi tugas kuliah**, bukan kalkulator kepatuhan hukum ketenagakerjaan atau payroll produksi.
-
-- Hari kerja standar untuk perhitungan potongan alpha: 26 hari per bulan.
-- Potongan alpha = `(gaji pokok bulanan / 26) × jumlah hari Alpha`, dibulatkan ke rupiah terdekat.
-- Izin dan sakit tidak mengurangi gaji dalam simulasi ini.
-- Upah lembur = `jumlah jam lembur × Rp20.000`.
-- Gaji bersih = `gaji pokok + tunjangan tetap + upah lembur − potongan alpha − potongan tambahan`.
-- Gaji bersih tidak ditampilkan sebagai nilai negatif; batas minimumnya Rp0.
-- Potongan tambahan dimasukkan saat menghitung payroll dan tidak disimpan sebagai data permanen.
-- Absensi disaring berdasarkan bulan kalender yang dipilih.
-
-Nilai 26 hari dan Rp20.000 per jam adalah parameter simulasi, bukan klaim bahwa aturan tersebut berlaku untuk semua perusahaan.
-
-## Struktur proyek
+## Struktur Repositori
 
 ```text
 sistem-absensi-gaji-java/
 ├── README.md
 ├── .gitignore
-├── src/main/java/id/kelompok/absensigaji/
-│   ├── app/Main.java
-│   ├── model/
-│   │   ├── Karyawan.java
-│   │   ├── StatusAbsensi.java
-│   │   ├── CatatanAbsensi.java
-│   │   └── HasilPenggajian.java
-│   └── service/
-│       ├── AbsensiService.java
-│       └── PenggajianService.java
+├── src/
+│   └── main/
+│       └── java/
+│           └── id/kelompok/absensigaji/
+│               ├── app/
+│               │   └── Main.java
+│               ├── employee/
+│               │   └── Karyawan.java
+│               ├── attendance/
+│               │   ├── StatusAbsensi.java
+│               │   ├── CatatanAbsensi.java
+│               │   └── AbsensiService.java
+│               └── payroll/
+│                   ├── HasilPenggajian.java
+│                   └── PenggajianService.java
 ├── docs/
 │   ├── PEMBAGIAN-TUGAS.md
 │   ├── DESAIN-OOP.md
+│   ├── KONTRAK-ANTARMODUL.md
 │   ├── PANDUAN-DOKUMENTASI.md
-│   ├── TEST-CASE.md
-│   └── PANDUAN-GITHUB.md
-└── screenshots/
-    └── README.md
+│   └── TEST-CASE.md
+├── screenshots/
+│   └── README.md
+└── .github/
+    └── pull_request_template.md
 ```
 
-## Konsep OOP yang ditunjukkan
+---
 
-- **Encapsulation:** atribut model dibuat `private` dan diakses melalui method yang sesuai.
-- **Class dan object:** `Karyawan`, `CatatanAbsensi`, dan `HasilPenggajian` menjadi cetak biru objek domain.
-- **Constructor dan validasi:** objek dicek agar tidak dibuat dengan nilai yang tidak masuk akal.
-- **Enum:** `StatusAbsensi` membatasi status ke empat pilihan yang sah.
-- **Separation of concerns:** `Main` menangani interaksi konsol, model menyimpan representasi data, dan service memuat aturan bisnis.
+## Indeks Dokumentasi
 
-Jangan menyatakan bahwa program menggunakan inheritance atau polymorphism apabila kedua konsep tersebut belum benar-benar diterapkan di source code.
+- [**docs/PEMBAGIAN-TUGAS.md**](docs/PEMBAGIAN-TUGAS.md): Matriks kepemilikan file, batas tanggung jawab anggota tim, branch fitur, dan panduan alur kerja Git/GitHub.
+- [**docs/KONTRAK-ANTARMODUL.md**](docs/KONTRAK-ANTARMODUL.md): Definisi API publik, signature method minimum yang disepakati, aliran data antarmodul, dan tata kelola perubahan kontrak.
+- [**docs/DESAIN-OOP.md**](docs/DESAIN-OOP.md): Penjelasan pilar OOP (Encapsulation, Class & Object, Separation of Concerns), peta class, relasi antarmodul, dan alasan pemilihan arsitektur *package-by-feature*.
+- [**docs/PANDUAN-DOKUMENTASI.md**](docs/PANDUAN-DOKUMENTASI.md): Pedoman penulisan penjelasan kode dan walkthrough contoh perhitungan manual simulasi gaji.
+- [**docs/TEST-CASE.md**](docs/TEST-CASE.md): Matriks 15 skenario pengujian unit dan integrasi beserta penanggung jawabnya.
+- [**.github/pull_request_template.md**](.github/pull_request_template.md): Template Pull Request standar untuk proses code review antaranggota.
 
-## Bukti pengujian dan dokumentasi
+---
 
-- Simpan screenshot hasil running yang terbaca di folder [`screenshots/`](screenshots/).
-- Isi penjelasan per kelas, alur logika, rumus, validasi, dan hasil pengujian di folder [`docs/`](docs/).
-- Gunakan [`docs/TEST-CASE.md`](docs/TEST-CASE.md) sebagai checklist minimum.
-- Dokumentasi merupakan bagian penting penilaian. Jangan hanya menempelkan source code; jelaskan *mengapa* class dan method dibuat serta bagaimana data mengalir.
+## Aturan Simulasi Penggajian
 
-## Status
+Aturan ini ditetapkan sebagai skenario simulasi akademik untuk diimplementasikan oleh Andri:
+- **Hari kerja standar bulanan:** 26 hari per bulan.
+- **Potongan Alpha:**
+  $$\text{Potongan Alpha} = \text{round}\left(\frac{\text{Gaji Pokok}}{26}\right) \times \text{Jumlah Hari Alpha}$$
+- **Izin dan Sakit:** Tidak memotong gaji pada simulasi ini.
+- **Upah Lembur:** $\text{Jumlah Jam Lembur} \times \text{Rp20.000}$ (hanya dapat diperoleh jika berstatus `HADIR`).
+- **Gaji Bersih:** $\max(0, \text{Gaji Pokok} + \text{Tunjangan Tetap} + \text{Upah Lembur} - \text{Potongan Alpha} - \text{Potongan Tambahan})$.
 
-Starter project untuk dikembangkan dan ditinjau oleh seluruh anggota kelompok. Pastikan tim memahami aturan perhitungan dan mampu menjelaskan setiap bagian kode saat demonstrasi.
+---
+
+## Cara Kompilasi dan Menjalankan
+
+Proyek ini dibangun menggunakan **Java Standard Library (JDK 17+)** tanpa ketergantungan library eksternal.
+
+### 1. Kompilasi (Linux / macOS / PowerShell)
+Dari direktori utama repositori:
+```bash
+javac -d out $(find src/main/java -name "*.java")
+```
+*Untuk Windows PowerShell:*
+```powershell
+$files = Get-ChildItem -Recurse src/main/java -Filter *.java | ForEach-Object { $_.FullName }
+javac -d out $files
+```
+
+### 2. Menjalankan Program
+```bash
+java -cp out id.kelompok.absensigaji.app.Main
+```
+
+---
+
+## Status Proyek Saat Ini
+
+> [!NOTE]
+> Proyek saat ini telah dikosongkan dari implementasi fungsional siap pakai dan berada dalam status **Kerangka Pembelajaran (Skeleton Framework)**.
+> - Struktur class, package, dan method signature publik telah terdefinisi dan siap dikompilasi dengan sukses (`javac`).
+> - Seluruh algoritma bisnis, validasi, dan alur pemrosesan telah dikosongkan dan ditandai dengan komentar `TODO` yang spesifik serta `UnsupportedOperationException`.
+> - Setiap anggota tim akan mengimplementasikan bagian masing-masing secara mandiri melalui branch Git terpisah (`feat/employee-and-app-ilham`, `feat/attendance-module-ade`, `feat/payroll-module-andri`) dan mengajukan Pull Request untuk di-review oleh rekan tim.

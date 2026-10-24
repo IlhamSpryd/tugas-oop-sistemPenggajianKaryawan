@@ -1,11 +1,11 @@
 package id.kelompok.absensigaji.app;
 
-import id.kelompok.absensigaji.model.CatatanAbsensi;
-import id.kelompok.absensigaji.model.HasilPenggajian;
-import id.kelompok.absensigaji.model.Karyawan;
-import id.kelompok.absensigaji.model.StatusAbsensi;
-import id.kelompok.absensigaji.service.AbsensiService;
-import id.kelompok.absensigaji.service.PenggajianService;
+import id.kelompok.absensigaji.attendance.AbsensiService;
+import id.kelompok.absensigaji.attendance.CatatanAbsensi;
+import id.kelompok.absensigaji.attendance.StatusAbsensi;
+import id.kelompok.absensigaji.employee.Karyawan;
+import id.kelompok.absensigaji.payroll.HasilPenggajian;
+import id.kelompok.absensigaji.payroll.PenggajianService;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -14,10 +14,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-/** Titik masuk aplikasi dan antarmuka menu konsol. */
+/**
+ * Titik masuk utama aplikasi (Main Entry Point) dan antarmuka menu konsol.
+ * Mengintegrasikan modul employee (Ilham), attendance (Ade), dan payroll (Andri).
+ *
+ * Penanggung jawab: Ilham Sepriyadi
+ */
 public class Main {
     private static final Scanner INPUT = new Scanner(System.in);
+
+    // Repository in-memory untuk menyimpan data karyawan
     private static final List<Karyawan> KARYAWAN = new ArrayList<>();
+
+    // Inisialisasi service antarmodul
     private static final AbsensiService ABSENSI = new AbsensiService();
     private static final PenggajianService PENGGAJIAN = new PenggajianService(ABSENSI);
 
@@ -26,6 +35,7 @@ public class Main {
         System.out.println("========================================");
         System.out.println(" SISTEM ABSENSI DAN PENGGAJIAN KARYAWAN");
         System.out.println("========================================");
+
         while (berjalan) {
             tampilkanMenu();
             String pilihan = bacaTeks("Pilih menu: ");
@@ -37,9 +47,9 @@ public class Main {
                 case "5" -> hitungGaji();
                 case "0" -> {
                     berjalan = false;
-                    System.out.println("Program selesai. Data pada versi ini tidak disimpan permanen.");
+                    System.out.println("Program selesai. Data pada versi ini disimpan di memori.");
                 }
-                default -> System.out.println("Pilihan tidak valid. Masukkan angka yang tersedia.");
+                default -> System.out.println("Pilihan tidak valid. Silakan pilih nomor menu yang tersedia.");
             }
             System.out.println();
         }
@@ -47,7 +57,7 @@ public class Main {
 
     private static void tampilkanMenu() {
         System.out.println("\n--- MENU UTAMA ---");
-        System.out.println("1. Tambah karyawan");
+        System.out.println("1. Tambah data karyawan");
         System.out.println("2. Lihat daftar karyawan");
         System.out.println("3. Input absensi dan lembur");
         System.out.println("4. Lihat riwayat absensi per karyawan/bulan");
@@ -57,139 +67,72 @@ public class Main {
 
     private static void tambahKaryawan() {
         System.out.println("\n--- TAMBAH KARYAWAN ---");
-        String id = bacaTeks("ID karyawan: ");
-        if (cariKaryawan(id) != null) {
-            System.out.println("ID tersebut sudah digunakan.");
-            return;
-        }
-        String nama = bacaTeks("Nama: ");
-        String jabatan = bacaTeks("Jabatan: ");
-        long gajiPokok = bacaLongNonNegatif("Gaji pokok bulanan (rupiah): ");
-        long tunjangan = bacaLongNonNegatif("Tunjangan tetap bulanan (rupiah): ");
-        try {
-            Karyawan karyawan = new Karyawan(id, nama, jabatan, gajiPokok, tunjangan);
-            KARYAWAN.add(karyawan);
-            System.out.println("Karyawan berhasil ditambahkan.");
-        } catch (IllegalArgumentException e) {
-            System.out.println("Data tidak valid: " + e.getMessage());
-        }
+        // TODO: Ilham - Implementasikan alur penambahan karyawan:
+        // 1. Minta input id, nama, jabatan, gajiPokok, dan tunjangan.
+        // 2. Periksa apakah id sudah terdaftar menggunakan cariKaryawan(id).
+        // 3. Instansiasi objek Karyawan baru dan simpan ke koleksi KARYAWAN.
+        // 4. Tangani kemungkinan IllegalArgumentException dengan pesan ramah pengguna.
+        System.out.println("[TODO] Fitur tambahKaryawan belum diimplementasikan.");
     }
 
     private static void tampilkanKaryawan() {
         System.out.println("\n--- DAFTAR KARYAWAN ---");
-        if (KARYAWAN.isEmpty()) {
-            System.out.println("Belum ada data karyawan.");
-            return;
-        }
-        for (Karyawan karyawan : KARYAWAN) {
-            System.out.println(karyawan);
-        }
+        // TODO: Ilham - Implementasikan penayangan daftar seluruh karyawan:
+        // 1. Periksa apakah koleksi KARYAWAN kosong.
+        // 2. Jika tidak kosong, lakukan iterasi dan cetak data setiap karyawan ke layar.
+        System.out.println("[TODO] Fitur tampilkanKaryawan belum diimplementasikan.");
     }
 
     private static void inputAbsensi() {
         System.out.println("\n--- INPUT ABSENSI ---");
-        if (KARYAWAN.isEmpty()) {
-            System.out.println("Tambahkan karyawan terlebih dahulu.");
-            return;
-        }
-        String id = bacaTeks("ID karyawan: ");
-        if (cariKaryawan(id) == null) {
-            System.out.println("ID karyawan tidak ditemukan.");
-            return;
-        }
-
-        LocalDate tanggal;
-        try {
-            tanggal = LocalDate.parse(bacaTeks("Tanggal (YYYY-MM-DD): "));
-        } catch (DateTimeParseException e) {
-            System.out.println("Format tanggal tidak valid. Contoh: 2026-10-24.");
-            return;
-        }
-
-        System.out.println("Status: 1. Hadir  2. Izin  3. Sakit  4. Alpha");
-        StatusAbsensi status = switch (bacaTeks("Pilih status: ")) {
-            case "1" -> StatusAbsensi.HADIR;
-            case "2" -> StatusAbsensi.IZIN;
-            case "3" -> StatusAbsensi.SAKIT;
-            case "4" -> StatusAbsensi.ALPHA;
-            default -> null;
-        };
-        if (status == null) {
-            System.out.println("Status tidak valid.");
-            return;
-        }
-        int jamLembur = status == StatusAbsensi.HADIR
-                ? bacaIntNonNegatif("Jam lembur (0 jika tidak ada): ") : 0;
-        try {
-            ABSENSI.catatAbsensi(id, tanggal, status, jamLembur);
-            System.out.println("Catatan absensi berhasil disimpan.");
-        } catch (IllegalArgumentException e) {
-            System.out.println("Absensi gagal: " + e.getMessage());
-        }
+        // TODO: Ilham - Implementasikan alur input absensi harian:
+        // 1. Validasi apakah ada karyawan terdaftar.
+        // 2. Minta input ID karyawan dan pastikan karyawan ditemukan lewat cariKaryawan(id).
+        // 3. Minta input tanggal absensi (format YYYY-MM-DD).
+        // 4. Minta pilihan status absensi (1. Hadir, 2. Izin, 3. Sakit, 4. Alpha).
+        // 5. Jika status Hadir, minta input jam lembur (0 jika tidak lembur).
+        // 6. Panggil ABSENSI.catatAbsensi(id, tanggal, status, jamLembur).
+        // 7. Tangani kemungkinan DateTimeParseException dan IllegalArgumentException.
+        System.out.println("[TODO] Fitur inputAbsensi belum diimplementasikan.");
     }
 
     private static void tampilkanRiwayatAbsensi() {
         System.out.println("\n--- RIWAYAT ABSENSI ---");
-        String id = bacaTeks("ID karyawan: ");
-        if (cariKaryawan(id) == null) {
-            System.out.println("ID karyawan tidak ditemukan.");
-            return;
-        }
-        YearMonth periode = bacaPeriode();
-        if (periode == null) return;
-        List<CatatanAbsensi> records = ABSENSI.getCatatan(id, periode);
-        if (records.isEmpty()) {
-            System.out.println("Tidak ada catatan absensi untuk periode tersebut.");
-            return;
-        }
-        records.forEach(System.out::println);
+        // TODO: Ilham - Implementasikan penayangan riwayat absensi:
+        // 1. Minta input ID karyawan dan validasi keberadaannya.
+        // 2. Minta input periode (format YYYY-MM).
+        // 3. Ambil data catatan melalui ABSENSI.getCatatan(id, periode).
+        // 4. Tampilkan daftar catatan absensi ke layar.
+        System.out.println("[TODO] Fitur tampilkanRiwayatAbsensi belum diimplementasikan.");
     }
 
     private static void hitungGaji() {
         System.out.println("\n--- HITUNG GAJI ---");
-        String id = bacaTeks("ID karyawan: ");
-        Karyawan karyawan = cariKaryawan(id);
-        if (karyawan == null) {
-            System.out.println("ID karyawan tidak ditemukan.");
-            return;
-        }
-        YearMonth periode = bacaPeriode();
-        if (periode == null) return;
-        long potonganTambahan = bacaLongNonNegatif("Potongan tambahan (rupiah, isi 0 jika tidak ada): ");
-        HasilPenggajian hasil = PENGGAJIAN.hitungGaji(karyawan, periode, potonganTambahan);
-        tampilkanHasilGaji(hasil);
+        // TODO: Ilham - Implementasikan alur kalkulasi gaji:
+        // 1. Minta input ID karyawan dan pastikan karyawan ditemukan lewat cariKaryawan(id).
+        // 2. Minta input periode (format YYYY-MM).
+        // 3. Minta input potongan tambahan (nominal rupiah, >= 0).
+        // 4. Panggil PENGGAJIAN.hitungGaji(karyawan, periode, potonganTambahan).
+        // 5. Cetak rincian hasil perhitungan menggunakan method tampilkanHasilGaji(hasil).
+        System.out.println("[TODO] Fitur hitungGaji belum diimplementasikan.");
     }
 
     private static void tampilkanHasilGaji(HasilPenggajian hasil) {
-        System.out.println("\n========== RINCIAN PENGGAJIAN ==========");
-        System.out.printf("Karyawan             : %s (%s)%n", hasil.getNamaKaryawan(), hasil.getIdKaryawan());
-        System.out.printf("Periode              : %s%n", hasil.getPeriode());
-        System.out.printf("Hadir / Izin / Sakit : %d / %d / %d hari%n",
-                hasil.getHariHadir(), hasil.getHariIzin(), hasil.getHariSakit());
-        System.out.printf("Alpha                : %d hari%n", hasil.getHariAlpha());
-        System.out.printf("Total jam lembur     : %d jam%n", hasil.getTotalJamLembur());
-        System.out.println("----------------------------------------");
-        System.out.printf("Gaji pokok           : Rp%,d%n", hasil.getGajiPokok());
-        System.out.printf("Tunjangan tetap      : Rp%,d%n", hasil.getTunjangan());
-        System.out.printf("Upah lembur          : Rp%,d%n", hasil.getUpahLembur());
-        System.out.printf("Potongan alpha       : Rp%,d%n", hasil.getPotonganAlpha());
-        System.out.printf("Potongan tambahan    : Rp%,d%n", hasil.getPotonganTambahan());
-        System.out.println("----------------------------------------");
-        System.out.printf("GAJI BERSIH          : Rp%,d%n", hasil.getGajiBersih());
-        System.out.println("========================================");
+        // TODO: Ilham - Format dan cetak ringkasan slip gaji karyawan secara rapi ke konsol.
     }
 
     private static Karyawan cariKaryawan(String id) {
-        return KARYAWAN.stream()
-                .filter(k -> k.getId().equalsIgnoreCase(id.trim()))
-                .findFirst().orElse(null);
+        // TODO: Ilham - Cari karyawan berdasarkan ID pada koleksi KARYAWAN (case-insensitive)
+        throw new UnsupportedOperationException("TODO: cariKaryawan() belum diimplementasikan.");
     }
+
+    // --- Helper methods untuk input konsol ---
 
     private static YearMonth bacaPeriode() {
         try {
             return YearMonth.parse(bacaTeks("Periode (YYYY-MM): "));
         } catch (DateTimeParseException e) {
-            System.out.println("Format periode tidak valid. Contoh: 2026-10.");
+            System.out.println("Format periode tidak valid. Contoh format yang benar: 2026-10.");
             return null;
         }
     }
@@ -205,7 +148,7 @@ public class Main {
                 long nilai = Long.parseLong(bacaTeks(prompt));
                 if (nilai >= 0) return nilai;
             } catch (NumberFormatException ignored) {
-                // Minta input ulang jika bukan bilangan bulat.
+                // Diabaikan, minta input ulang
             }
             System.out.println("Masukkan bilangan bulat nol atau lebih.");
         }
@@ -217,7 +160,7 @@ public class Main {
                 int nilai = Integer.parseInt(bacaTeks(prompt));
                 if (nilai >= 0) return nilai;
             } catch (NumberFormatException ignored) {
-                // Minta input ulang jika bukan bilangan bulat.
+                // Diabaikan, minta input ulang
             }
             System.out.println("Masukkan bilangan bulat nol atau lebih.");
         }

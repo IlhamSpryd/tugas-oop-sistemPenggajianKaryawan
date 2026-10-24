@@ -1,6 +1,11 @@
-package id.kelompok.absensigaji.model;
+package id.kelompok.absensigaji.payroll;
 
-/** Menyimpan rincian hasil perhitungan gaji untuk satu karyawan dan satu bulan. */
+/**
+ * Menyimpan rincian hasil perhitungan gaji karyawan untuk satu periode tertentu.
+ * Berfungsi sebagai data transfer/value object yang menghubungkan modul payroll dengan modul tampilan (app).
+ *
+ * Penanggung jawab: Andri
+ */
 public class HasilPenggajian {
     private final String idKaryawan;
     private final String namaKaryawan;
@@ -22,6 +27,7 @@ public class HasilPenggajian {
                            int totalJamLembur, long gajiPokok, long tunjangan,
                            long upahLembur, long potonganAlpha,
                            long potonganTambahan, long gajiBersih) {
+        // Inisialisasi rincian perhitungan penggajian
         this.idKaryawan = idKaryawan;
         this.namaKaryawan = namaKaryawan;
         this.periode = periode;
@@ -38,18 +44,59 @@ public class HasilPenggajian {
         this.gajiBersih = gajiBersih;
     }
 
-    public String getIdKaryawan() { return idKaryawan; }
-    public String getNamaKaryawan() { return namaKaryawan; }
-    public String getPeriode() { return periode; }
-    public int getHariHadir() { return hariHadir; }
-    public int getHariIzin() { return hariIzin; }
-    public int getHariSakit() { return hariSakit; }
-    public int getHariAlpha() { return hariAlpha; }
-    public int getTotalJamLembur() { return totalJamLembur; }
-    public long getGajiPokok() { return gajiPokok; }
-    public long getTunjangan() { return tunjangan; }
-    public long getUpahLembur() { return upahLembur; }
-    public long getPotonganAlpha() { return potonganAlpha; }
-    public long getPotonganTambahan() { return potonganTambahan; }
-    public long getGajiBersih() { return gajiBersih; }
+    public String getIdKaryawan() {
+        return idKaryawan;
+    }
+
+    public String getNamaKaryawan() {
+        return namaKaryawan;
+    }
+
+    public String getPeriode() {
+        return periode;
+    }
+
+    public int getHariHadir() {
+        return hariHadir;
+    }
+
+    public int getHariIzin() {
+        return hariIzin;
+    }
+
+    public int getHariSakit() {
+        return hariSakit;
+    }
+
+    public int getHariAlpha() {
+        return hariAlpha;
+    }
+
+    public int getTotalJamLembur() {
+        return totalJamLembur;
+    }
+
+    public long getGajiPokok() {
+        return gajiPokok;
+    }
+
+    public long getTunjangan() {
+        return tunjangan;
+    }
+
+    public long getUpahLembur() {
+        return upahLembur;
+    }
+
+    public long getPotonganAlpha() {
+        return potonganAlpha;
+    }
+
+    public long getPotonganTambahan() {
+        return potonganTambahan;
+    }
+
+    public long getGajiBersih() {
+        return gajiBersih;
+    }
 }
