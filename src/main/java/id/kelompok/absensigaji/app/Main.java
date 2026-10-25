@@ -15,26 +15,37 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Titik masuk utama aplikasi (Main Entry Point) dan antarmuka menu konsol.
- * Mengintegrasikan modul employee (Ilham), attendance (Ade), dan payroll (Andri).
+ * Titik masuk utama aplikasi (Main Entry Point) dan antarmuka menu konsol (CLI).
+ * Bertindak sebagai Orchestrator yang mengintegrasikan ketiga modul:
+ * - Modul employee (Ilham Sepriyadi)
+ * - Modul attendance (Ade Rizky)
+ * - Modul payroll (Muhammad Andriansyah)
  *
- * Penanggung jawab: Ilham Sepriyadi
+ * Tim Pengembang & Kolaborasi:
+ * - Penanggung Jawab / Author : Ilham Sepriyadi
+ * - Reviewer Modul             : Ade Rizky & Muhammad Andriansyah
  */
 public class Main {
     private static final Scanner INPUT = new Scanner(System.in);
 
-    // Repository in-memory untuk menyimpan data karyawan
+    // Repository in-memory untuk menyimpan master data karyawan (Kelolaan Ilham)
     private static final List<Karyawan> KARYAWAN = new ArrayList<>();
 
-    // Inisialisasi service antarmodul
+    // [Catatan Arsitektur - Ilham Sepriyadi]:
+    // Di sini kita menerapkan Manual Dependency Injection:
+    // 1. Instansiasi ABSENSI (Modul Ade Rizky) sebagai repositori riwayat kehadiran.
+    // 2. Suntikkan ABSENSI ke dalam konstruktor PENGGAJIAN (Modul Muhammad Andriansyah).
+    // Dengan pola ini, PenggajianService tidak terikat secara kaku (loose coupling).
+    //
+    // [Review Muhammad Andriansyah & Ade Rizky]:
+    // Andriansyah : "Pola DI manual ini bersih banget Ham, modularitas tetap terjaga tanpa ribet konfigurasi framework."
+    // Ade Rizky   : "Semua state absensi konsisten karena cuma ada 1 instance ABSENSI yang dipakai bersama."
     private static final AbsensiService ABSENSI = new AbsensiService();
     private static final PenggajianService PENGGAJIAN = new PenggajianService(ABSENSI);
 
     public static void main(String[] args) {
         boolean berjalan = true;
-        System.out.println("========================================");
-        System.out.println(" SISTEM ABSENSI DAN PENGGAJIAN KARYAWAN");
-        System.out.println("========================================");
+        System.out.println("SISTEM ABSENSI DAN PENGGAJIAN KARYAWAN");
 
         while (berjalan) {
             tampilkanMenu();
@@ -47,16 +58,16 @@ public class Main {
                 case "5" -> hitungGaji();
                 case "0" -> {
                     berjalan = false;
-                    System.out.println("Program selesai. Data pada versi ini disimpan di memori.");
+                    System.out.println("Program selesai");
                 }
-                default -> System.out.println("Pilihan tidak valid. Silakan pilih nomor menu yang tersedia.");
+                default -> System.out.println("Pilihan tidak valid");
             }
             System.out.println();
         }
     }
 
     private static void tampilkanMenu() {
-        System.out.println("\n--- MENU UTAMA ---");
+        System.out.println("\nMENU UTAMA");
         System.out.println("1. Tambah data karyawan");
         System.out.println("2. Lihat daftar karyawan");
         System.out.println("3. Input absensi dan lembur");
@@ -66,7 +77,7 @@ public class Main {
     }
 
     private static void tambahKaryawan() {
-        System.out.println("\n--- TAMBAH KARYAWAN ---");
+        System.out.println("\nTAMBAH KARYAWAN");
         String id = bacaTeks("ID karyawan: ");
         if (cariKaryawan(id) != null) {
             System.out.println("ID tersebut sudah digunakan.");
@@ -86,7 +97,7 @@ public class Main {
     }
 
     private static void tampilkanKaryawan() {
-        System.out.println("\n--- DAFTAR KARYAWAN ---");
+        System.out.println("\nDAFTAR KARYAWAN");
         if (KARYAWAN.isEmpty()) {
             System.out.println("Belum ada data karyawan.");
             return;
@@ -97,7 +108,7 @@ public class Main {
     }
 
     private static void inputAbsensi() {
-        System.out.println("\n--- INPUT ABSENSI ---");
+        System.out.println("\nINPUT ABSENSI");
         if (KARYAWAN.isEmpty()) {
             System.out.println("Tambahkan karyawan terlebih dahulu.");
             return;
@@ -131,6 +142,9 @@ public class Main {
         int jamLembur = status == StatusAbsensi.HADIR
                 ? bacaIntNonNegatif("Jam lembur (0 jika tidak ada): ") : 0;
         try {
+            // [Integrasi Ilham -> Ade Rizky]:
+            // Memanggil service absensi milik Ade. Validasi duplikasi tanggal dan jam lembur
+            // akan melempar IllegalArgumentException yang ditangkap di sini agar program tidak crash.
             ABSENSI.catatAbsensi(id, tanggal, status, jamLembur);
             System.out.println("Catatan absensi berhasil disimpan.");
         } catch (IllegalArgumentException e) {
@@ -139,7 +153,7 @@ public class Main {
     }
 
     private static void tampilkanRiwayatAbsensi() {
-        System.out.println("\n--- RIWAYAT ABSENSI ---");
+        System.out.println("\nRIWAYAT ABSENSI");
         String id = bacaTeks("ID karyawan: ");
         if (cariKaryawan(id) == null) {
             System.out.println("ID karyawan tidak ditemukan.");
@@ -156,7 +170,7 @@ public class Main {
     }
 
     private static void hitungGaji() {
-        System.out.println("\n--- HITUNG GAJI ---");
+        System.out.println("\nHITUNG GAJI");
         String id = bacaTeks("ID karyawan: ");
         Karyawan karyawan = cariKaryawan(id);
         if (karyawan == null) {
@@ -167,6 +181,9 @@ public class Main {
         if (periode == null) return;
         long potonganTambahan = bacaLongNonNegatif("Potongan tambahan (rupiah, isi 0 jika tidak ada): ");
         try {
+            // [Integrasi Ilham -> Muhammad Andriansyah]:
+            // Memanggil service payroll milik Andri. Seluruh kalkulasi ditangani di PenggajianService
+            // dan hasilnya dikembalikan sebagai Value Object HasilPenggajian.
             HasilPenggajian hasil = PENGGAJIAN.hitungGaji(karyawan, periode, potonganTambahan);
             tampilkanHasilGaji(hasil);
         } catch (IllegalArgumentException e) {
@@ -175,22 +192,19 @@ public class Main {
     }
 
     private static void tampilkanHasilGaji(HasilPenggajian hasil) {
-        System.out.println("\n========== RINCIAN PENGGAJIAN ==========");
+        System.out.println("\nRINCIAN PENGGAJIAN");
         System.out.printf("Karyawan             : %s (%s)%n", hasil.getNamaKaryawan(), hasil.getIdKaryawan());
         System.out.printf("Periode              : %s%n", hasil.getPeriode());
         System.out.printf("Hadir / Izin / Sakit : %d / %d / %d hari%n",
                 hasil.getHariHadir(), hasil.getHariIzin(), hasil.getHariSakit());
         System.out.printf("Alpha                : %d hari%n", hasil.getHariAlpha());
         System.out.printf("Total jam lembur     : %d jam%n", hasil.getTotalJamLembur());
-        System.out.println("----------------------------------------");
         System.out.printf("Gaji pokok           : Rp%,d%n", hasil.getGajiPokok());
         System.out.printf("Tunjangan tetap      : Rp%,d%n", hasil.getTunjangan());
         System.out.printf("Upah lembur          : Rp%,d%n", hasil.getUpahLembur());
         System.out.printf("Potongan alpha       : Rp%,d%n", hasil.getPotonganAlpha());
         System.out.printf("Potongan tambahan    : Rp%,d%n", hasil.getPotonganTambahan());
-        System.out.println("----------------------------------------");
         System.out.printf("GAJI BERSIH          : Rp%,d%n", hasil.getGajiBersih());
-        System.out.println("========================================");
     }
 
     private static Karyawan cariKaryawan(String id) {

@@ -2,17 +2,13 @@
 
 Proyek kelompok mata kuliah **Pemrograman Berorientasi Objek**. Proyek ini dirancang sebagai kerangka kerja pembelajaran (*learning skeleton/framework*) bertaraf industri untuk mengimplementasikan sistem pencatatan kehadiran karyawan dan simulasi penggajian bulanan berbasis konsol menggunakan bahasa pemrograman Java murni.
 
----
+## Anggota Kelompok dan Kepemilikan Modul
 
-## Anggota Kelompok & Kepemilikan Modul
-
-1. **Ilham Sepriyadi** — Koordinator proyek, integrasi sistem, modul `employee` (`Karyawan.java`), menu konsol `app` (`Main.java`), dan dokumentasi arsitektur.
-2. **Ade** — Modul `attendance` (`StatusAbsensi.java`, `CatatanAbsensi.java`, `AbsensiService.java`), validasi kehadiran, anti-duplikasi, dan pengujian modul absensi.
-3. **Andri** — Modul `payroll` (`HasilPenggajian.java`, `PenggajianService.java`), logika kalkulasi gaji, upah lembur, potongan alpha, dan pengujian payroll.
+1. **Ilham Sepriyadi** : Koordinator proyek, integrasi sistem, modul `employee` (`Karyawan.java`), menu konsol `app` (`Main.java`), dan dokumentasi arsitektur.
+2. **Ade Rizky** : Modul `attendance` (`StatusAbsensi.java`, `CatatanAbsensi.java`, `AbsensiService.java`), validasi kehadiran, anti-duplikasi, dan pengujian modul absensi.
+3. **Muhammad Andriansyah** : Modul `payroll` (`HasilPenggajian.java`, `PenggajianService.java`), logika kalkulasi gaji, upah lembur, potongan alpha, dan pengujian payroll.
 
 Rincian batas kepemilikan dan panduan alur kerja Git tersedia di [`docs/PEMBAGIAN-TUGAS.md`](docs/PEMBAGIAN-TUGAS.md).
-
----
 
 ## Struktur Repositori
 
@@ -36,6 +32,7 @@ sistem-absensi-gaji-java/
 │                   ├── HasilPenggajian.java
 │                   └── PenggajianService.java
 ├── docs/
+│   ├── DOKUMENTASI.md
 │   ├── PEMBAGIAN-TUGAS.md
 │   ├── DESAIN-OOP.md
 │   ├── KONTRAK-ANTARMODUL.md
@@ -47,18 +44,15 @@ sistem-absensi-gaji-java/
     └── pull_request_template.md
 ```
 
----
-
 ## Indeks Dokumentasi
 
+- [**docs/DOKUMENTASI.md**](docs/DOKUMENTASI.md): **Dokumentasi Lengkap Proyek dan Kolaborasi Tim** : Pembahasan menyeluruh sistem OOP dengan bahasa manusiawi tingkat mahasiswa, walkthrough kode, catatan kolaborasi Ilham, Andriansyah, dan Ade, simulasi hitung gaji, dan pengujian sistem.
 - [**docs/PEMBAGIAN-TUGAS.md**](docs/PEMBAGIAN-TUGAS.md): Matriks kepemilikan file, batas tanggung jawab anggota tim, branch fitur, dan panduan alur kerja Git/GitHub.
 - [**docs/KONTRAK-ANTARMODUL.md**](docs/KONTRAK-ANTARMODUL.md): Definisi API publik, signature method minimum yang disepakati, aliran data antarmodul, dan tata kelola perubahan kontrak.
 - [**docs/DESAIN-OOP.md**](docs/DESAIN-OOP.md): Penjelasan pilar OOP (Encapsulation, Class & Object, Separation of Concerns), peta class, relasi antarmodul, dan alasan pemilihan arsitektur *package-by-feature*.
 - [**docs/PANDUAN-DOKUMENTASI.md**](docs/PANDUAN-DOKUMENTASI.md): Pedoman penulisan penjelasan kode dan walkthrough contoh perhitungan manual simulasi gaji.
 - [**docs/TEST-CASE.md**](docs/TEST-CASE.md): Matriks 15 skenario pengujian unit dan integrasi beserta penanggung jawabnya.
 - [**.github/pull_request_template.md**](.github/pull_request_template.md): Template Pull Request standar untuk proses code review antaranggota.
-
----
 
 ## Aturan Simulasi Penggajian
 
@@ -69,8 +63,6 @@ Aturan ini ditetapkan sebagai skenario simulasi akademik untuk diimplementasikan
 - **Izin dan Sakit:** Tidak memotong gaji pada simulasi ini.
 - **Upah Lembur:** $\text{Jumlah Jam Lembur} \times \text{Rp20.000}$ (hanya dapat diperoleh jika berstatus `HADIR`).
 - **Gaji Bersih:** $\max(0, \text{Gaji Pokok} + \text{Tunjangan Tetap} + \text{Upah Lembur} - \text{Potongan Alpha} - \text{Potongan Tambahan})$.
-
----
 
 ## Cara Kompilasi dan Menjalankan
 
@@ -91,8 +83,6 @@ javac -d out $files
 ```bash
 java -cp out id.kelompok.absensigaji.app.Main
 ```
-
----
 
 ## Status Proyek Saat Ini
 

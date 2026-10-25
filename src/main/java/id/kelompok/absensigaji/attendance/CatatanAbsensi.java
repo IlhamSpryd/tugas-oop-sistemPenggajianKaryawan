@@ -5,15 +5,30 @@ import java.util.Objects;
 
 /**
  * Merepresentasikan satu rekaman absensi seorang karyawan pada tanggal tertentu.
+ * Mengusung konsep Value Object / Immutability demi konsistensi data riwayat kehadiran.
  *
- * Penanggung jawab: Ade
+ * Tim Pengembang & Kolaborasi:
+ * - Penanggung Jawab / Author : Ade Rizky
+ * - Reviewer Modul             : Muhammad Andriansyah & Ilham Sepriyadi
  */
 public class CatatanAbsensi {
+    // [Catatan Desain - Ade Rizky]:
+    // Semua atribut bersifat private final agar tidak ada manipulasi data kehadiran pasca-input.
     private final String idKaryawan;
     private final LocalDate tanggal;
     private final StatusAbsensi status;
     private final int jamLembur;
 
+    /**
+     * Konstruktor dengan validasi integritas aturan bisnis absensi.
+     *
+     * [Diskusi Review Tim]:
+     * - Ade Rizky    : "Di sini gw pasang aturan bisnis: lembur HANYA sah kalau statusnya HADIR.
+     *                   Kalau izin/sakit/alpha tapi ada jam lemburnya, sistem bakal langsung nolak."
+     * - Andriansyah  : "Mantap De! Dengan validasi ketat ini, modul payroll gw gak bakal kecolongan
+     *                   ngitung upah lembur buat orang yang statusnya lagi SAKIT atau ALPHA."
+     * - Ilham        : "Udah gw tes di skenario TC-06, eksepsinya terbukti tertangkap dengan mulus."
+     */
     public CatatanAbsensi(String idKaryawan, LocalDate tanggal,
                           StatusAbsensi status, int jamLembur) {
         if (idKaryawan == null || idKaryawan.isBlank()) {

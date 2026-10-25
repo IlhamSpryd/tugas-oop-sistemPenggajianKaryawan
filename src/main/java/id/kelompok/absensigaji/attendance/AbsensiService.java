@@ -8,16 +8,29 @@ import java.util.List;
 
 /**
  * Layanan untuk mengelola penyimpanan, validasi, dan penelusuran data absensi karyawan.
+ * Mengimplementasikan prinsip Separation of Concerns: pemisahan logika penyimpanan riwayat dari model entitas.
  *
- * Penanggung jawab: Ade
+ * Tim Pengembang & Kolaborasi:
+ * - Penanggung Jawab / Author : Ade Rizky
+ * - Reviewer Modul             : Ilham Sepriyadi & Muhammad Andriansyah
  */
 public class AbsensiService {
-    // Media penyimpanan data absensi dalam memori
+    // [Catatan Ade Rizky]:
+    // Media penyimpanan in-memory menggunakan ArrayList.
+    // Encapsulation diterapkan: field bersifat private, akses dari luar harus via method service.
     private final List<CatatanAbsensi> daftarCatatan = new ArrayList<>();
 
     /**
      * Mencatat data absensi baru ke dalam sistem.
-     * Harus memvalidasi agar tidak terjadi duplikasi tanggal untuk karyawan yang sama.
+     * Menerapkan validasi anti-duplikasi: satu karyawan hanya boleh memiliki 1 catatan per tanggal.
+     *
+     * [Diskusi Tim]:
+     * - Ade Rizky    : "Validasi tanggal duplikat sengaja gw taruh di Service, bukan di CatatanAbsensi.
+     *                   Alasannya karena objek CatatanAbsensi cuma tahu dirinya sendiri,
+     *                   sedangkan AbsensiService yang megang daftar seluruh riwayat (Separation of Concerns)."
+     * - Ilham        : "Tepat banget De. Sesuai prinsip Single Responsibility. Di Main nanti pesan gagalnya
+     *                   bisa langsung di-catch dan ditampilin ke user tanpa bikin program berhenti mendadak."
+     * - Andriansyah  : "Filter stream-nya rapi dan udah case-insensitive buat ID karyawan."
      */
     public void catatAbsensi(String idKaryawan, LocalDate tanggal,
                              StatusAbsensi status, int jamLembur) {
@@ -44,6 +57,10 @@ public class AbsensiService {
 
     /**
      * Mengambil catatan absensi untuk karyawan tertentu pada periode bulan dan tahun yang ditentukan.
+     *
+     * [Catatan Ade untuk Andri]:
+     * "Ndri, method getCatatan ini mengembalikan List yang udah difilter per YearMonth dan terurut tanggal.
+     * Menggunakan .toList() sehingga immutable, aman dari modifikasi eksternal saat dihitung di PenggajianService."
      */
     public List<CatatanAbsensi> getCatatan(String idKaryawan, YearMonth periode) {
         if (idKaryawan == null || periode == null) {

@@ -13,6 +13,16 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Kelas Otomasi Pengujian Sistem (Automated Test Suite) untuk memvalidasi
+ * seluruh aturan bisnis dan skenario pengujian unit/integrasi (TC-01 s/d TC-15).
+ *
+ * Kolaborasi Tim Penguji:
+ * - TC-01 s/d TC-03 : Ilham Sepriyadi       (Validasi Modul Employee)
+ * - TC-04 s/d TC-09 : Ade Rizky             (Validasi Modul Attendance)
+ * - TC-10 s/d TC-14 : Muhammad Andriansyah  (Validasi Modul Payroll)
+ * - TC-15           : Pengujian Bersama     (Skenario Integrasi End-to-End)
+ */
 public class SystemTest {
     private static int passed = 0;
     private static int failed = 0;

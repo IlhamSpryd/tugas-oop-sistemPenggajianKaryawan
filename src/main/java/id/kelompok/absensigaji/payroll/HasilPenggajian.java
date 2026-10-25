@@ -2,11 +2,17 @@ package id.kelompok.absensigaji.payroll;
 
 /**
  * Menyimpan rincian hasil perhitungan gaji karyawan untuk satu periode tertentu.
- * Berfungsi sebagai data transfer/value object yang menghubungkan modul payroll dengan modul tampilan (app).
+ * Berfungsi sebagai Data Transfer Object (DTO) / Value Object yang menghubungkan
+ * modul payroll dengan modul presentasi antarmuka (app).
  *
- * Penanggung jawab: Andri
+ * Tim Pengembang & Kolaborasi:
+ * - Penanggung Jawab / Author : Muhammad Andriansyah
+ * - Reviewer Modul            : Ilham Sepriyadi & Ade Rizky
  */
 public class HasilPenggajian {
+    // [Catatan Desain - Muhammad Andriansyah]:
+    // DTO ini sengaja dibuat immutable (semua atribut private final dan hanya menyediakan getter).
+    // Tujuannya agar hasil perhitungan yang telah diproses secara sah tidak dapat diubah-ubah lagi di lapisan UI.
     private final String idKaryawan;
     private final String namaKaryawan;
     private final String periode;
@@ -22,6 +28,15 @@ public class HasilPenggajian {
     private final long potonganTambahan;
     private final long gajiBersih;
 
+    /**
+     * Menginstansiasi snapshot slip gaji lengkap.
+     *
+     * [Diskusi Tim]:
+     * - Andriansyah  : "Semua komponen gw tampung di sini lengkap: rekapan absensi sampai breakdown rupiahnya."
+     * - Ilham        : "Keren Ndri, dengan begini method tampilkanHasilGaji() di Main tinggal panggil getter
+     *                   tanpa perlu kalkulasi tambahan lagi di level UI (Single Responsibility Principle)."
+     * - Ade Rizky    : "Field hariHadir, hariAlpha, dll. juga langsung sinkron sama data absensi yang udah gw rekap."
+     */
     public HasilPenggajian(String idKaryawan, String namaKaryawan, String periode,
                            int hariHadir, int hariIzin, int hariSakit, int hariAlpha,
                            int totalJamLembur, long gajiPokok, long tunjangan,

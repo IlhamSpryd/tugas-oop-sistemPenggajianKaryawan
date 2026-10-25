@@ -18,14 +18,12 @@ public class GenerateScreenshots {
         // 1. Menu Utama
         renderTerminalScreenshot(
                 new File(dir, "01-menu-utama.png"),
-                "Sistem Absensi dan Penggajian Karyawan - Menu Utama",
+                "Sistem Absensi dan Penggajian Karyawan : Menu Utama",
                 List.of(
                         "$ java -cp out id.kelompok.absensigaji.app.Main",
-                        "========================================",
-                        " SISTEM ABSENSI DAN PENGGAJIAN KARYAWAN",
-                        "========================================",
+                        "SISTEM ABSENSI DAN PENGGAJIAN KARYAWAN",
                         "",
-                        "--- MENU UTAMA ---",
+                        "MENU UTAMA",
                         "1. Tambah data karyawan",
                         "2. Lihat daftar karyawan",
                         "3. Input absensi dan lembur",
@@ -39,11 +37,11 @@ public class GenerateScreenshots {
         // 2. Tambah & Tampilkan Karyawan
         renderTerminalScreenshot(
                 new File(dir, "02-tambah-daftar-karyawan.png"),
-                "Menu 1 & 2 - Tambah & Lihat Karyawan",
+                "Menu 1 dan 2 : Tambah dan Lihat Karyawan",
                 List.of(
                         "Pilih menu: 1",
                         "",
-                        "--- TAMBAH KARYAWAN ---",
+                        "TAMBAH KARYAWAN",
                         "ID karyawan: K001",
                         "Nama: Budi",
                         "Jabatan: Staff",
@@ -51,7 +49,7 @@ public class GenerateScreenshots {
                         "Tunjangan tetap bulanan (rupiah): 300000",
                         "Karyawan berhasil ditambahkan.",
                         "",
-                        "--- MENU UTAMA ---",
+                        "MENU UTAMA",
                         "1. Tambah data karyawan",
                         "2. Lihat daftar karyawan",
                         "3. Input absensi dan lembur",
@@ -60,7 +58,7 @@ public class GenerateScreenshots {
                         "0. Keluar",
                         "Pilih menu: 2",
                         "",
-                        "--- DAFTAR KARYAWAN ---",
+                        "DAFTAR KARYAWAN",
                         "ID: K001 | Nama: Budi | Jabatan: Staff | Gaji Pokok: Rp3,000,000 | Tunjangan: Rp300,000",
                         "",
                         "Pilih menu: _"
@@ -72,7 +70,7 @@ public class GenerateScreenshots {
                 new File(dir, "02-data-karyawan.png"),
                 "Daftar Karyawan Terdaftar",
                 List.of(
-                        "--- MENU UTAMA ---",
+                        "MENU UTAMA",
                         "1. Tambah data karyawan",
                         "2. Lihat daftar karyawan",
                         "3. Input absensi dan lembur",
@@ -81,7 +79,7 @@ public class GenerateScreenshots {
                         "0. Keluar",
                         "Pilih menu: 2",
                         "",
-                        "--- DAFTAR KARYAWAN ---",
+                        "DAFTAR KARYAWAN",
                         "ID: K001 | Nama: Budi | Jabatan: Staff | Gaji Pokok: Rp3,000,000 | Tunjangan: Rp300,000",
                         "ID: K002 | Nama: Siti | Jabatan: Magang | Gaji Pokok: Rp2,000,000 | Tunjangan: Rp0",
                         "",
@@ -92,11 +90,11 @@ public class GenerateScreenshots {
         // 3. Input Absensi Valid
         renderTerminalScreenshot(
                 new File(dir, "03-input-absensi-valid.png"),
-                "Menu 3 - Input Absensi Valid",
+                "Menu 3 : Input Absensi Valid",
                 List.of(
                         "Pilih menu: 3",
                         "",
-                        "--- INPUT ABSENSI ---",
+                        "INPUT ABSENSI",
                         "ID karyawan: K001",
                         "Tanggal (YYYY-MM-DD): 2026-10-01",
                         "Status: 1. Hadir  2. Izin  3. Sakit  4. Alpha",
@@ -104,7 +102,7 @@ public class GenerateScreenshots {
                         "Jam lembur (0 jika tidak ada): 3",
                         "Catatan absensi berhasil disimpan.",
                         "",
-                        "--- MENU UTAMA ---",
+                        "MENU UTAMA",
                         "Pilih menu: _"
                 )
         );
@@ -113,7 +111,7 @@ public class GenerateScreenshots {
                 new File(dir, "03-input-absensi.png"),
                 "Input Absensi Karyawan",
                 List.of(
-                        "--- INPUT ABSENSI ---",
+                        "INPUT ABSENSI",
                         "ID karyawan: K001",
                         "Tanggal (YYYY-MM-DD): 2026-10-01",
                         "Status: 1. Hadir  2. Izin  3. Sakit  4. Alpha",
@@ -132,7 +130,7 @@ public class GenerateScreenshots {
                 List.of(
                         "Pilih menu: 3",
                         "",
-                        "--- INPUT ABSENSI ---",
+                        "INPUT ABSENSI",
                         "ID karyawan: K001",
                         "Tanggal (YYYY-MM-DD): 2026-10-01",
                         "Status: 1. Hadir  2. Izin  3. Sakit  4. Alpha",
@@ -140,7 +138,7 @@ public class GenerateScreenshots {
                         "Jam lembur (0 jika tidak ada): 2",
                         "Absensi gagal: Absensi karyawan pada tanggal tersebut sudah ada.",
                         "",
-                        "--- MENU UTAMA ---",
+                        "MENU UTAMA",
                         "Pilih menu: _"
                 )
         );
@@ -148,11 +146,11 @@ public class GenerateScreenshots {
         // 5. Riwayat Absensi
         renderTerminalScreenshot(
                 new File(dir, "05-riwayat-absensi.png"),
-                "Menu 4 - Riwayat Absensi Periode 2026-10",
+                "Menu 4 : Riwayat Absensi Periode 2026-10",
                 List.of(
                         "Pilih menu: 4",
                         "",
-                        "--- RIWAYAT ABSENSI ---",
+                        "RIWAYAT ABSENSI",
                         "ID karyawan: K001",
                         "Periode (YYYY-MM): 2026-10",
                         "2026-10-01 | K001 | HADIR | Lembur: 3 jam",
@@ -162,7 +160,7 @@ public class GenerateScreenshots {
                         "2026-10-05 | K001 | ALPHA | Lembur: 0 jam",
                         "2026-10-06 | K001 | HADIR | Lembur: 2 jam",
                         "",
-                        "--- MENU UTAMA ---",
+                        "MENU UTAMA",
                         "Pilih menu: _"
                 )
         );
@@ -171,7 +169,7 @@ public class GenerateScreenshots {
                 new File(dir, "04-riwayat-absensi.png"),
                 "Riwayat Catatan Absensi",
                 List.of(
-                        "--- RIWAYAT ABSENSI ---",
+                        "RIWAYAT ABSENSI",
                         "ID karyawan: K001",
                         "Periode (YYYY-MM): 2026-10",
                         "2026-10-01 | K001 | HADIR | Lembur: 3 jam",
@@ -181,6 +179,7 @@ public class GenerateScreenshots {
                         "2026-10-05 | K001 | ALPHA | Lembur: 0 jam",
                         "2026-10-06 | K001 | HADIR | Lembur: 2 jam",
                         "",
+                        "MENU UTAMA",
                         "Pilih menu: _"
                 )
         );
@@ -188,30 +187,27 @@ public class GenerateScreenshots {
         // 6. Hasil Kalkulasi Penggajian
         renderTerminalScreenshot(
                 new File(dir, "06-hasil-kalkulasi-penggajian.png"),
-                "Menu 5 - Hasil Kalkulasi Penggajian Bulanan",
+                "Menu 5 : Hasil Kalkulasi Penggajian Bulanan",
                 List.of(
                         "Pilih menu: 5",
                         "",
-                        "--- HITUNG GAJI ---",
+                        "HITUNG GAJI",
                         "ID karyawan: K001",
                         "Periode (YYYY-MM): 2026-10",
                         "Potongan tambahan (rupiah, isi 0 jika tidak ada): 50000",
                         "",
-                        "========== RINCIAN PENGGAJIAN ==========",
+                        "RINCIAN PENGGAJIAN",
                         "Karyawan             : Budi (K001)",
                         "Periode              : 2026-10",
                         "Hadir / Izin / Sakit : 20 / 1 / 1 hari",
                         "Alpha                : 2 hari",
                         "Total jam lembur     : 5 jam",
-                        "----------------------------------------",
                         "Gaji pokok           : Rp3,000,000",
                         "Tunjangan tetap      : Rp300,000",
                         "Upah lembur          : Rp100,000",
                         "Potongan alpha       : Rp230,769",
                         "Potongan tambahan    : Rp50,000",
-                        "----------------------------------------",
                         "GAJI BERSIH          : Rp3,119,231",
-                        "========================================",
                         "",
                         "Pilih menu: _"
                 )
@@ -221,21 +217,18 @@ public class GenerateScreenshots {
                 new File(dir, "05-hasil-penggajian.png"),
                 "Rincian Slip Gaji Karyawan",
                 List.of(
-                        "========== RINCIAN PENGGAJIAN ==========",
+                        "RINCIAN PENGGAJIAN",
                         "Karyawan             : Budi (K001)",
                         "Periode              : 2026-10",
                         "Hadir / Izin / Sakit : 20 / 1 / 1 hari",
                         "Alpha                : 2 hari",
                         "Total jam lembur     : 5 jam",
-                        "----------------------------------------",
                         "Gaji pokok           : Rp3,000,000",
                         "Tunjangan tetap      : Rp300,000",
                         "Upah lembur          : Rp100,000",
                         "Potongan alpha       : Rp230,769",
                         "Potongan tambahan    : Rp50,000",
-                        "----------------------------------------",
-                        "GAJI BERSIH          : Rp3,119,231",
-                        "========================================"
+                        "GAJI BERSIH          : Rp3,119,231"
                 )
         );
 
@@ -287,7 +280,9 @@ public class GenerateScreenshots {
         for (String line : lines) {
             if (line.startsWith("$")) {
                 g2d.setColor(new Color(100, 210, 100));
-            } else if (line.contains("===") || line.contains("---")) {
+            } else if (line.equals("MENU UTAMA") || line.equals("TAMBAH KARYAWAN") || line.equals("DAFTAR KARYAWAN")
+                    || line.equals("INPUT ABSENSI") || line.equals("RIWAYAT ABSENSI") || line.equals("HITUNG GAJI")
+                    || line.equals("RINCIAN PENGGAJIAN") || line.equals("SISTEM ABSENSI DAN PENGGAJIAN KARYAWAN")) {
                 g2d.setColor(new Color(120, 180, 255));
             } else if (line.contains("GAJI BERSIH")) {
                 g2d.setColor(new Color(255, 215, 0));

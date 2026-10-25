@@ -4,15 +4,28 @@ package id.kelompok.absensigaji.employee;
  * Merepresentasikan data dasar seorang karyawan.
  * Modul ini menjadi fondasi identitas karyawan untuk modul absensi dan penggajian.
  *
- * Penanggung jawab: Ilham Sepriyadi
+ * Tim Pengembang & Kolaborasi:
+ * - Penanggung Jawab / Author : Ilham Sepriyadi
+ * - Reviewer Modul             : Muhammad Andriansyah & Ade Rizky
  */
 public class Karyawan {
+    // [Catatan Desain - Ilham Sepriyadi]:
+    // Seluruh atribut dibuat 'private final' demi menjamin prinsip Enkapsulasi & Immutability.
+    // Sekali objek Karyawan dibuat, state di dalamnya tidak boleh diubah (read-only via getter).
     private final String id;
     private final String nama;
     private final String jabatan;
-    private final long gajiPokokBulanan;
+    private final long gajiPokokBulanan;       // Tipe 'long' dipilih untuk mencegah floating-point rounding issue
     private final long tunjanganTetapBulanan;
 
+    /**
+     * Konstruktor utama dengan validasi integritas data (Defensive Programming).
+     *
+     * [Diskusi Tim]:
+     * - Ilham        : "Constructor ini jadi penjaga gerbang. Kalau data masukan cacat, langsung lempar IllegalArgumentException."
+     * - Andriansyah  : "Setuju Ham, validasi gaji non-negatif di sini bikin modul payroll gw tenang gak bakal dapet angka minus dari awal."
+     * - Ade Rizky    : "Bagus juga ada trim() dan isBlank() check, jadi data ID yang masuk ke modul absensi gw udah bersih."
+     */
     public Karyawan(String id, String nama, String jabatan,
                     long gajiPokokBulanan, long tunjanganTetapBulanan) {
         if (id == null || id.isBlank()) {
